@@ -50,17 +50,11 @@ final class CovidView: UIView {
         return label
      }()
     
-    lazy var pieChartView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.layer.cornerRadius = 50.0
-        imageView.layer.borderWidth = 1.0
-        imageView.layer.borderColor = UIColor.quaternaryLabel.cgColor
-        imageView.backgroundColor = .tertiaryLabel
-        imageView.image = UIImage(systemName: "person")
-        imageView.contentMode = .scaleAspectFit
-        imageView.clipsToBounds = true
+    lazy var pieChartView: PieChartView = {
+        let chartView = PieChartView()
+        chartView.backgroundColor = .tertiaryLabel
         
-        return imageView
+        return chartView
     }()
     
     override init(frame: CGRect) {
@@ -74,7 +68,7 @@ final class CovidView: UIView {
     }
 }
 
-private extension CovidView {
+extension CovidView {
     func setUILayout() {
         backgroundColor = .systemBackground
 
@@ -101,6 +95,13 @@ private extension CovidView {
             $0.top.equalTo(safeAreaLayoutGuide).offset(16.0)
             $0.centerX.equalToSuperview()
             $0.height.equalTo(80.0)
+        }
+        
+        pieChartView.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(24.0)
+            $0.trailing.equalToSuperview().inset(24.0)
+            $0.top.equalTo(hotizontalStackView.snp.bottom).offset(80.0)
+            $0.height.equalTo(600.0)
         }
     }
 }
