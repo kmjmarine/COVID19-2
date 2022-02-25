@@ -5,18 +5,31 @@
 //  Created by kmjmarine on 2022/02/23.
 //
 
-import Foundation
 import UIKit
+import SnapKit
 
-final class CovidDetailViewController: UITableViewController {
-    
+final class CovidDetailViewController: UIViewController {
     var covidOverview: CovidOverview? //선택된 지역의 코로나 현황 데이터 전달 받음
+    
+    var cellLabelList: [String] = ["신규 확진자", "누적 확진자", "완치자", "사망자", "발생률", "해외유입 신규 확진자", "지역발생 신규 확진자"]
+    var cellVauleList: [String] = []
+    
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+
+        return tableView
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.register(CovidListCell.self, forCellReuseIdentifier: "CovidListCell")
+        tableView.delegate = self
+        tableView.dataSource = self
         
+        tableView.register(CovidListCell.self, forCellReuseIdentifier: "CovidListCell")
+        tableView.layer.backgroundColor = UIColor.red.cgColor
+        
+        self.setUILayout()
         self.configureOverview()
     }
 
@@ -25,14 +38,47 @@ final class CovidDetailViewController: UITableViewController {
         guard let covidOverview = self.covidOverview else {
             return
         }
+        
         self.title = covidOverview.countryName //네이게이션바 타이틀에 지역이름 표시
-//        self.newCaseCell.detailTextLabel?.text = "\(covidOverview.newCase)명"
-//        self.totalCaseCell.detailTextLabel?.text = "\(covidOverview.totalCase)명"
-//        self.recoveredCell.detailTextLabel?.text = "\(covidOverview.recovered)명"
-//        self.deathCell.detailTextLabel?.text = "\(covidOverview.death)명"
-//        self.percentageCell.detailTextLabel?.text = "\(covidOverview.percentage)%"
-//        self.overseasInflowCell.detailTextLabel?.text = "\(covidOverview.newFcase)명"
-//        self.regionalOutbreakCell.detailTextLabel?.text = "\(covidOverview.newCase)명"
+        cellVauleList.append("\(covidOverview.newCase)명")
+        cellVauleList.append("\(covidOverview.totalCase)명")
+        cellVauleList.append("\(covidOverview.recovered)명")
+        cellVauleList.append("\(covidOverview.death)명")
+        cellVauleList.append("\(covidOverview.percentage)%")
+        cellVauleList.append("\(covidOverview.newCcase)명")
+        cellVauleList.append("\(covidOverview.newFcase)명")
+    }
+}
+
+
+private extension CovidDetailViewController {
+    func setUILayout() {
+        [tableView]
+            .forEach { self.view.addSubview($0) }
+        tableView.snp.makeConstraints {
+            $0.edges.equalToSuperview().offset(5.0)
+            $0.width.equalToSuperview()
+        }
+    }
+}
+
+extension CovidDetailViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 7
     }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CovidListCell", for: indexPath) as? CovidListCell else { return UITableViewCell() }
+        
+        let cellLabelList = cellLabelList[indexPath.row]
+        let cellValueList = cellVauleList[indexPath.row]
+        cell.configureOverview1(with: cellLabelList)
+        cell.configureOverView2(with: cellValueList)
+        
+        return cell
+    }
 }
+
+
+    
+
