@@ -23,6 +23,9 @@ final class CovidDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.addTarget(self, action: #selector(configureOverview), for: .valueChanged)
+        
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -33,7 +36,7 @@ final class CovidDetailViewController: UIViewController {
         self.configureOverview()
     }
 
-    func configureOverview() {
+    @objc func configureOverview() {
         //covidOverview 프로퍼티를 옵셔널 바인딩 함
         guard let covidOverview = self.covidOverview else {
             return
@@ -47,6 +50,9 @@ final class CovidDetailViewController: UIViewController {
         cellVauleList.append("\(covidOverview.percentage)%")
         cellVauleList.append("\(covidOverview.newCcase)명")
         cellVauleList.append("\(covidOverview.newFcase)명")
+        
+        self.tableView.reloadData()
+        self.tableView.refreshControl?.endRefreshing()
     }
 }
 
