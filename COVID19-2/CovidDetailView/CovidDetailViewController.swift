@@ -72,8 +72,8 @@ extension CovidDetailViewController: UITableViewDelegate, UITableViewDataSource 
         
         let cellLabelList = cellLabelList[indexPath.row]
         let cellValueList = cellVauleList[indexPath.row]
-        cell.configureOverview1(with: cellLabelList)
-        cell.configureOverView2(with: cellValueList)
+        cell.configureLabelName(with: cellLabelList)
+        cell.configureLabelValue(with: cellValueList)
         
         return cell
     }

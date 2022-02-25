@@ -35,11 +35,11 @@ final class CovidListCell: UITableViewCell {
         super.layoutSubviews()
     }
     
-    func configureOverview1(with cellLabelList: String) {
+    func configureLabelName(with cellLabelList: String) {
         labelNameLabel.text = cellLabelList
     }
     
-    func configureOverView2(with cellValueList: String) {
+    func configureLabelValue(with cellValueList: String) {
         labelValueLabel.text = cellValueList
     }
     
