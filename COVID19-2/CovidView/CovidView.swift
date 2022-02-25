@@ -52,7 +52,7 @@ final class CovidView: UIView {
     
     lazy var pieChartView: PieChartView = {
         let chartView = PieChartView()
-        chartView.backgroundColor = .tertiaryLabel
+        chartView.backgroundColor = .systemBackground
         
         return chartView
     }()
@@ -100,7 +100,7 @@ extension CovidView {
         pieChartView.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(24.0)
             $0.trailing.equalToSuperview().inset(24.0)
-            $0.top.equalTo(hotizontalStackView.snp.bottom).offset(80.0)
+            $0.top.equalTo(hotizontalStackView.snp.bottom).offset(10.0)
             $0.height.equalTo(600.0)
         }
     }
